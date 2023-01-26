@@ -1,21 +1,22 @@
 package ru.netology.web.page;
 
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.conditions.ExactText;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
-    private SelenideElement heading = $(".heading_size_1");
-    private SelenideElement buyButton = $(byText("Купить"));
+    private String host = "http://localhost:8080";
+    private SelenideElement heading = $(".heading_size_l");
+    private SelenideElement buyButton = $(byText("Купить")).parent().parent();
     private SelenideElement buyInCreditButton = $(byText("Купить в кредит"));
 
-    private SelenideElement howToPayChoiceHeading = $(".heading").find(exactText("карт");
+    private SelenideElement howToPayChoiceHeading = $$("h3").find(text("карт"));
 
     public MainPage() {
+        open(host);
         heading.shouldBe(visible);
     }
 
