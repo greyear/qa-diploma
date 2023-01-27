@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Condition.empty;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class CreditPage {
+public class CardPage {
     // Поля
     private SelenideElement cardNumberField = $$(".input__inner").findBy(text("Номер карты")).$("input");
     private SelenideElement monthField = $$(".input__inner").findBy(text("Месяц")).$("input");
@@ -109,6 +109,14 @@ public class CreditPage {
 
     public void invalidExpDateMonthError() {
         verificationErrorMonth.shouldHave(text("Неверно указан срок действия карты"), Duration.ofSeconds(3));
+    }
+
+    public void invalidExpDateYearError() {
+        verificationErrorYear.shouldHave(text("Истёк срок действия карты"), Duration.ofSeconds(3));
+    }
+
+    public void invalidCVVError() {
+        verificationErrorCVV.shouldHave(text("Неверное значение"), Duration.ofSeconds(3));
     }
 
     public void emptyCardNumberInField() {

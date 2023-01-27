@@ -1,7 +1,6 @@
 package ru.netology.web.page;
 
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.conditions.ExactText;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
@@ -20,15 +19,15 @@ public class MainPage {
         heading.shouldBe(visible);
     }
 
-    public DebitPage goToDebitPage() {
+    public CardPage goToDebitPage() {
         buyButton.click();
         howToPayChoiceHeading.shouldHave(exactText("Оплата по карте"));
-        return new DebitPage();
+        return new CardPage();
     }
 
-    public CreditPage goToCreditPage() {
+    public CardPage goToCreditPage() {
         buyInCreditButton.click();
         howToPayChoiceHeading.shouldHave(exactText("Кредит по данным карты"));
-        return new CreditPage();
+        return new CardPage();
     }
 }
