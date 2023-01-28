@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.netology.web.data.DBConnector;
 import ru.netology.web.data.DataGenerator;
 import ru.netology.web.page.CardPage;
 import ru.netology.web.page.MainPage;
@@ -26,10 +27,10 @@ public class DebitCardTest {
     @DisplayName("1. Покупка с оплатой дебетовой картой со статусом APPROVED: отправка формы в введенными во все поля валидными данными")
     void shouldPassWithApprovedDebitCard() {
         debitPage = mainPage.goToDebitPage();
-        DataGenerator.PaymentData beforeRequest = DataGenerator.getLastPaymentData("payment_entity");
+        DBConnector.PaymentData beforeRequest = DBConnector.getLastPaymentData("payment_entity");
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
         debitPage.checkIfSuccess();
-        DataGenerator.PaymentData afterRequest = DataGenerator.getLastPaymentData("payment_entity");
+        DBConnector.PaymentData afterRequest = DBConnector.getLastPaymentData("payment_entity");
         assertNotEquals(beforeRequest.getId(), afterRequest.getId());
         assertEquals("APPROVED", afterRequest.getStatus());
     }
@@ -40,10 +41,10 @@ public class DebitCardTest {
     @DisplayName("2. Покупка по карте со статусом DECLINED")
     void shouldFailWithDeclinedDebitCard() {
         debitPage = mainPage.goToDebitPage();
-        DataGenerator.PaymentData beforeRequest = DataGenerator.getLastPaymentData("payment_entity");
+        DBConnector.PaymentData beforeRequest = DBConnector.getLastPaymentData("payment_entity");
         debitPage.fillInCardInfo(DataGenerator.getDeclinedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
         debitPage.checkIfFail();
-        DataGenerator.PaymentData afterRequest = DataGenerator.getLastPaymentData("payment_entity");
+        DBConnector.PaymentData afterRequest = DBConnector.getLastPaymentData("payment_entity");
         assertNotEquals(beforeRequest.getId(), afterRequest.getId());
         assertEquals("DECLINED", afterRequest.getStatus());
     }

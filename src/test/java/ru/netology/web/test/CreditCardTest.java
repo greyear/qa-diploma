@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.netology.web.data.DBConnector;
 import ru.netology.web.data.DataGenerator;
 import ru.netology.web.page.CardPage;
 import ru.netology.web.page.MainPage;
@@ -26,10 +27,10 @@ public class CreditCardTest {
     @DisplayName("26. Покупка с оплатой в кредит по карте со статусом APPROVED: отправка формы с введенными во всем поля валидными данными")
     void shouldPassWithApprovedCardInCredit() {
         creditPage = mainPage.goToCreditPage();
-        DataGenerator.PaymentData beforeRequest = DataGenerator.getLastPaymentData("credit_request_entity");
+        DBConnector.PaymentData beforeRequest = DBConnector.getLastPaymentData("credit_request_entity");
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
         creditPage.checkIfSuccess();
-        DataGenerator.PaymentData afterRequest = DataGenerator.getLastPaymentData("credit_request_entity");
+        DBConnector.PaymentData afterRequest = DBConnector.getLastPaymentData("credit_request_entity");
         assertNotEquals(beforeRequest.getId(), afterRequest.getId());
         assertEquals("APPROVED", afterRequest.getStatus());
     }
@@ -40,10 +41,10 @@ public class CreditCardTest {
     @DisplayName("27. Покупка по карте со статусом DECLINED")
     void shouldFailWithDeclinedCardInCredit() {
         creditPage = mainPage.goToCreditPage();
-        DataGenerator.PaymentData beforeRequest = DataGenerator.getLastPaymentData("credit_request_entity");
+        DBConnector.PaymentData beforeRequest = DBConnector.getLastPaymentData("credit_request_entity");
         creditPage.fillInCardInfo(DataGenerator.getDeclinedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
         creditPage.checkIfFail();
-        DataGenerator.PaymentData afterRequest = DataGenerator.getLastPaymentData("credit_request_entity");
+        DBConnector.PaymentData afterRequest = DBConnector.getLastPaymentData("credit_request_entity");
         assertNotEquals(beforeRequest.getId(), afterRequest.getId());
         assertEquals("DECLINED", afterRequest.getStatus());
     }
