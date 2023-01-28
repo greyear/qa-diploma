@@ -1,9 +1,5 @@
 package ru.netology.web.data;
 
-import com.github.javafaker.Faker;
-
-import java.util.Locale;
-
 public class DataGenerator {
 
     //Валидные значения
@@ -12,7 +8,7 @@ public class DataGenerator {
     }
 
     public static String getDeclinedCardNumber() {
-        return "4444 4444 4444 4441";
+        return "4444 4444 4444 4442";
     }
 
     public static String getApprovedMonth() {
