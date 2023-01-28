@@ -1,5 +1,12 @@
 package ru.netology.web.data;
 
+import lombok.Value;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class DataGenerator {
 
     //Валидные значения
@@ -118,5 +125,31 @@ public class DataGenerator {
 
     public static String getCVVWith2Symbols() {
         return "34";
+    }
+
+    @Value
+    public static class PaymentData {
+        String id;
+        String status;
+    }
+
+    public static PaymentData getLastPaymentData(String tableName) throws SQLException {
+        String paymentSQL = "SELECT id, status FROM " + tableName + " ORDER BY created DESC LIMIT 1";
+        String id = null;
+        String status = null;
+        try (
+                Connection conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/app", "app", "pass"
+                );
+                Statement paymentStmt = conn.createStatement()
+        ) {
+            try (var rs = paymentStmt.executeQuery(paymentSQL)) {
+                if (rs.next()) {
+                    id = rs.getString("id");
+                    status = rs.getString("status");
+                }
+            }
+        }
+        return new PaymentData(id, status);
     }
 }
