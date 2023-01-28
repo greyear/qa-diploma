@@ -1,9 +1,9 @@
 package ru.netology.web.test;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.web.data.DBConnector;
 import ru.netology.web.data.DataGenerator;
 import ru.netology.web.page.CardPage;
@@ -15,6 +15,16 @@ public class DebitCardTest {
 
     private MainPage mainPage;
     private CardPage debitPage;
+
+    @BeforeAll
+    static void setUp() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
 
     @BeforeEach
     void setUpMainPage() {
