@@ -6,7 +6,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 import ru.netology.web.data.DBConnector;
 import ru.netology.web.data.DataGenerator;
-import ru.netology.web.page.CardPage;
+import ru.netology.web.page.CreditPage;
 import ru.netology.web.page.MainPage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CreditCardTest {
     private MainPage mainPage;
-    private CardPage creditPage;
+    private CreditPage creditPage;
 
     @BeforeAll
     static void setUp() {
@@ -65,11 +65,11 @@ public class CreditCardTest {
     void shouldThrowAllVerificationErrorsInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getEmptyCardNumber(), DataGenerator.getEmptyMonth(), DataGenerator.getEmptyYear(), DataGenerator.getEmptyOwner(), DataGenerator.getEmptyCVV());
-        creditPage.emptyCardNumberError();
-        creditPage.emptyMonthError();
-        creditPage.emptyYearError();
-        creditPage.emptyOwnerError();
-        creditPage.emptyCVVError();
+        creditPage.checkCardNumberText("Поле обязательно для заполнения");
+        creditPage.checkMonthText("Поле обязательно для заполнения");
+        creditPage.checkYearText("Поле обязательно для заполнения");
+        creditPage.checkOwnerText("Поле обязательно для заполнения");
+        creditPage.checkCVVText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -96,7 +96,7 @@ public class CreditCardTest {
     void shouldThrowWrongFormatCardNumberVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getCardNumberWithLessNumbers(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.wrongFormatCardNumberError();
+        creditPage.checkCardNumberText("Неверный формат");
     }
 
     @Test
@@ -105,7 +105,7 @@ public class CreditCardTest {
     void shouldThrowEmptyCardNumberVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getEmptyCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.emptyCardNumberError();
+        creditPage.checkCardNumberText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -123,7 +123,7 @@ public class CreditCardTest {
     void shouldThrowInvalidExpDateMonthVerificationErrorWithMoreThan12InCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getMonthWithMoreThan12(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.invalidExpDateMonthError();
+        creditPage.checkMonthText("Неверно указан срок действия карты");
     }
 
     @Test
@@ -132,7 +132,7 @@ public class CreditCardTest {
     void shouldThrowWrongFormatMonthVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getMonthWith1Symbol(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.wrongFormatMonthError();
+        creditPage.checkMonthText("Неверный формат");
     }
 
     @Test
@@ -141,7 +141,7 @@ public class CreditCardTest {
     void shouldThrowEmptyMonthVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getEmptyMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.emptyMonthError();
+        creditPage.checkMonthText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -150,7 +150,7 @@ public class CreditCardTest {
     void shouldThrowInvalidExpDateMonthVerificationErrorWith00InCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getMonthWith00(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.invalidExpDateMonthError();
+        creditPage.checkMonthText("Неверно указан срок действия карты");
     }
 
     @Test
@@ -168,7 +168,7 @@ public class CreditCardTest {
     void shouldThrowInvalidExpDateYearVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getYearLessThanCurrent(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.invalidExpDateYearError();
+        creditPage.checkYearText("Истёк срок действия карты");
     }
 
     @Test
@@ -177,7 +177,7 @@ public class CreditCardTest {
     void shouldThrowWrongFormatYearVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getYearWith1Symbol(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.wrongFormatYearError();
+        creditPage.checkYearText("Неверный формат");
     }
 
     @Test
@@ -186,7 +186,7 @@ public class CreditCardTest {
     void shouldThrowEmptyYearVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getEmptyYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.emptyYearError();
+        creditPage.checkYearText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -195,7 +195,7 @@ public class CreditCardTest {
     void shouldThrowInvalidExpDateYearVerificationErrorWith00InCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getYearWith00(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        creditPage.invalidExpDateYearError();
+        creditPage.checkYearText("Истёк срок действия карты");
     }
 
     @Test
@@ -213,7 +213,7 @@ public class CreditCardTest {
     void shouldThrowWrongFormatOwnerVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getOwnerWithCyrillicLetters(), DataGenerator.getApprovedCVV());
-        creditPage.wrongFormatOwnerError();
+        creditPage.checkOwnerText("Неверный формат");
     }
 
     @Test
@@ -231,7 +231,7 @@ public class CreditCardTest {
     void shouldThrowEmptyOwnerVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getEmptyOwner(), DataGenerator.getApprovedCVV());
-        creditPage.emptyOwnerError();
+        creditPage.checkOwnerText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -240,7 +240,7 @@ public class CreditCardTest {
     void shouldThrowWrongFormatCVVVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getCVVWith2Symbols());
-        creditPage.wrongFormatCVVError();
+        creditPage.checkCVVText("Неверный формат");
     }
 
     @Test
@@ -249,7 +249,7 @@ public class CreditCardTest {
     void shouldThrowEmptyCVVVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getEmptyCVV());
-        creditPage.emptyCVVError();
+        creditPage.checkCVVText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -258,7 +258,7 @@ public class CreditCardTest {
     void shouldThrowInvalidCVVVerificationErrorInCredit() {
         creditPage = mainPage.goToCreditPage();
         creditPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getCVVWith00());
-        creditPage.invalidCVVError();
+        creditPage.checkCVVText("Неверное значение");
     }
 
     @Test

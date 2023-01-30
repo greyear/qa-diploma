@@ -6,15 +6,16 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 import ru.netology.web.data.DBConnector;
 import ru.netology.web.data.DataGenerator;
-import ru.netology.web.page.CardPage;
+import ru.netology.web.page.DebitPage;
 import ru.netology.web.page.MainPage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class DebitCardTest {
 
     private MainPage mainPage;
-    private CardPage debitPage;
+    private DebitPage debitPage;
 
     @BeforeAll
     static void setUp() {
@@ -65,11 +66,11 @@ public class DebitCardTest {
     void shouldThrowAllVerificationErrorsDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getEmptyCardNumber(), DataGenerator.getEmptyMonth(), DataGenerator.getEmptyYear(), DataGenerator.getEmptyOwner(), DataGenerator.getEmptyCVV());
-        debitPage.emptyCardNumberError();
-        debitPage.emptyMonthError();
-        debitPage.emptyYearError();
-        debitPage.emptyOwnerError();
-        debitPage.emptyCVVError();
+        debitPage.checkCardNumberText("Поле обязательно для заполнения");
+        debitPage.checkMonthText("Поле обязательно для заполнения");
+        debitPage.checkYearText("Поле обязательно для заполнения");
+        debitPage.checkOwnerText("Поле обязательно для заполнения");
+        debitPage.checkCVVText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -96,7 +97,7 @@ public class DebitCardTest {
     void shouldThrowWrongFormatCardNumberVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getCardNumberWithLessNumbers(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.wrongFormatCardNumberError();
+        debitPage.checkCardNumberText("Неверный формат");
     }
 
     @Test
@@ -105,7 +106,7 @@ public class DebitCardTest {
     void shouldThrowEmptyCardNumberVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getEmptyCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.emptyCardNumberError();
+        debitPage.checkCardNumberText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -123,7 +124,7 @@ public class DebitCardTest {
     void shouldThrowInvalidExpDateMonthVerificationErrorWithMoreThan12DebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getMonthWithMoreThan12(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.invalidExpDateMonthError();
+        debitPage.checkMonthText("Неверно указан срок действия карты");
     }
 
     @Test
@@ -132,7 +133,7 @@ public class DebitCardTest {
     void shouldThrowWrongFormatMonthVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getMonthWith1Symbol(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.wrongFormatMonthError();
+        debitPage.checkMonthText("Неверный формат");
     }
 
     @Test
@@ -141,7 +142,7 @@ public class DebitCardTest {
     void shouldThrowEmptyMonthVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getEmptyMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.emptyMonthError();
+        debitPage.checkMonthText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -150,7 +151,7 @@ public class DebitCardTest {
     void shouldThrowInvalidExpDateMonthVerificationErrorWith00DebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getMonthWith00(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.invalidExpDateMonthError();
+        debitPage.checkMonthText("Неверно указан срок действия карты");
     }
 
     @Test
@@ -168,7 +169,7 @@ public class DebitCardTest {
     void shouldThrowInvalidExpDateYearVerificationErrorLessThanCurrentDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getYearLessThanCurrent(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.invalidExpDateYearError();
+        debitPage.checkYearText("Истёк срок действия карты");
     }
 
     @Test
@@ -177,7 +178,7 @@ public class DebitCardTest {
     void shouldThrowWrongFormatYearVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getYearWith1Symbol(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.wrongFormatYearError();
+        debitPage.checkYearText("Неверный формат");
     }
 
     @Test
@@ -186,7 +187,7 @@ public class DebitCardTest {
     void shouldThrowEmptyYearVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getEmptyYear(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.emptyYearError();
+        debitPage.checkYearText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -195,7 +196,7 @@ public class DebitCardTest {
     void shouldThrowInvalidExpDateYearVerificationErrorWith00DebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getYearWith00(), DataGenerator.getApprovedOwner(), DataGenerator.getApprovedCVV());
-        debitPage.invalidExpDateYearError();
+        debitPage.checkYearText("Истёк срок действия карты");
     }
     @Test
     //Вручную проходит
@@ -212,7 +213,7 @@ public class DebitCardTest {
     void shouldThrowWrongFormatOwnerVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getOwnerWithCyrillicLetters(), DataGenerator.getApprovedCVV());
-        debitPage.wrongFormatOwnerError();
+        debitPage.checkOwnerText("Неверный формат");
     }
 
     @Test
@@ -230,7 +231,7 @@ public class DebitCardTest {
     void shouldThrowEmptyOwnerVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getEmptyOwner(), DataGenerator.getApprovedCVV());
-        debitPage.emptyOwnerError();
+        debitPage.checkOwnerText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -239,7 +240,7 @@ public class DebitCardTest {
     void shouldThrowWrongFormatCVVVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getCVVWith2Symbols());
-        debitPage.wrongFormatCVVError();
+        debitPage.checkCVVText("Неверный формат");
     }
 
     @Test
@@ -248,7 +249,7 @@ public class DebitCardTest {
     void shouldThrowEmptyCVVVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getEmptyCVV());
-        debitPage.emptyCVVError();
+        debitPage.checkCVVText("Поле обязательно для заполнения");
     }
 
     @Test
@@ -257,7 +258,7 @@ public class DebitCardTest {
     void shouldThrowInvalidCVVVerificationErrorDebitCard() {
         debitPage = mainPage.goToDebitPage();
         debitPage.fillInCardInfo(DataGenerator.getApprovedCardNumber(), DataGenerator.getApprovedMonth(), DataGenerator.getApprovedYear(), DataGenerator.getApprovedOwner(), DataGenerator.getCVVWith00());
-        debitPage.invalidCVVError();
+        debitPage.checkCVVText("Неверное значение");
     }
 
     @Test

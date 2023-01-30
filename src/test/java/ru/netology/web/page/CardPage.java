@@ -5,8 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.empty;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class CardPage {
@@ -67,56 +66,24 @@ public class CardPage {
         failOperationNotification.shouldBe(Condition.visible, Duration.ofSeconds(20));
     }
 
-    public void wrongFormatCardNumberError() {
-        verificationErrorNumber.shouldHave(text("Неверный формат"), Duration.ofSeconds(3));
+    public void checkCardNumberText(String text) {
+        verificationErrorNumber.shouldHave(text(text), Duration.ofSeconds(3)).shouldBe(visible);
     }
 
-    public void wrongFormatMonthError() {
-        verificationErrorMonth.shouldHave(text("Неверный формат"), Duration.ofSeconds(3));
+    public void checkMonthText(String text) {
+        verificationErrorMonth.shouldHave(text(text), Duration.ofSeconds(3)).shouldBe(visible);
     }
 
-    public void wrongFormatYearError() {
-        verificationErrorYear.shouldHave(text("Неверный формат"), Duration.ofSeconds(3));
+    public void checkYearText(String text) {
+        verificationErrorYear.shouldHave(text(text), Duration.ofSeconds(3)).shouldBe(visible);
     }
 
-    public void wrongFormatOwnerError() {
-        verificationErrorOwner.shouldHave(text("Неверный формат"), Duration.ofSeconds(3));
+    public void checkOwnerText(String text) {
+        verificationErrorOwner.shouldHave(text(text), Duration.ofSeconds(3)).shouldBe(visible);
     }
 
-    public void wrongFormatCVVError() {
-        verificationErrorCVV.shouldHave(text("Неверный формат"), Duration.ofSeconds(3));
-    }
-
-    public void emptyCardNumberError() {
-        verificationErrorNumber.shouldHave(text("Поле обязательно для заполнения"), Duration.ofSeconds(3));
-    }
-
-    public void emptyMonthError() {
-        verificationErrorMonth.shouldHave(text("Поле обязательно для заполнения"), Duration.ofSeconds(3));
-    }
-
-    public void emptyYearError() {
-        verificationErrorYear.shouldHave(text("Поле обязательно для заполнения"), Duration.ofSeconds(3));
-    }
-
-    public void emptyOwnerError() {
-        verificationErrorOwner.shouldHave(text("Поле обязательно для заполнения"), Duration.ofSeconds(3));
-    }
-
-    public void emptyCVVError() {
-        verificationErrorCVV.shouldHave(text("Поле обязательно для заполнения"), Duration.ofSeconds(3));
-    }
-
-    public void invalidExpDateMonthError() {
-        verificationErrorMonth.shouldHave(text("Неверно указан срок действия карты"), Duration.ofSeconds(3));
-    }
-
-    public void invalidExpDateYearError() {
-        verificationErrorYear.shouldHave(text("Истёк срок действия карты"), Duration.ofSeconds(3));
-    }
-
-    public void invalidCVVError() {
-        verificationErrorCVV.shouldHave(text("Неверное значение"), Duration.ofSeconds(3));
+    public void checkCVVText(String text) {
+        verificationErrorCVV.shouldHave(text(text), Duration.ofSeconds(3)).shouldBe(visible);
     }
 
     public void emptyCardNumberInField() {
