@@ -33,6 +33,7 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
     testImplementation 'com.codeborne:selenide:5.19.0'
+    testImplementation 'com.github.javafaker:javafaker:1.0.2'
 
     implementation 'mysql:mysql-connector-java:8.0.25'
     implementation 'org.postgresql:postgresql:42.2.12'

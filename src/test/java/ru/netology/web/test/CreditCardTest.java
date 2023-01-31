@@ -145,7 +145,7 @@ public class CreditCardTest {
     }
 
     @Test
-    //Вручную проходит
+    //Вручную не проходит, форма отправляется без ошибок
     @DisplayName("37. Месяц из двух нулей")
     void shouldThrowInvalidExpDateMonthVerificationErrorWith00InCredit() {
         creditPage = mainPage.goToCreditPage();

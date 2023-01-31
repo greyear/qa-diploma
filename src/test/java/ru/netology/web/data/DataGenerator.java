@@ -1,6 +1,14 @@
 package ru.netology.web.data;
 
+import com.github.javafaker.Faker;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class DataGenerator {
+    private static Faker fakerEn = new Faker(new Locale("en"));
+    private static Faker fakerRu = new Faker(new Locale("ru"));
 
     //Валидные значения
     public static String getApprovedCardNumber() {
@@ -12,19 +20,23 @@ public class DataGenerator {
     }
 
     public static String getApprovedMonth() {
-        return "08";
+        String randomMonth = String.valueOf(fakerEn.number().numberBetween(1, 13));
+        if (randomMonth.length() == 1) {
+            return "0" + randomMonth;
+        }
+        return randomMonth;
     }
 
     public static String getApprovedYear() {
-        return "23";
+        return LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yy"));
     }
 
     public static String getApprovedOwner() {
-        return "IVAN PETROV";
+        return fakerEn.name().firstName().toUpperCase() + " " + fakerEn.name().lastName().toUpperCase();
     }
 
     public static String getApprovedCVV() {
-        return "345";
+        return fakerEn.number().digits(3);
     }
 
     //Невалидные значения
@@ -80,7 +92,7 @@ public class DataGenerator {
     }
 
     public static String getOwnerWithCyrillicLetters() {
-        return "ИВАН ПЕТРОВ";
+        return fakerRu.name().firstName().toUpperCase() + " " + fakerRu.name().lastName().toUpperCase();
     }
 
     public static String getOwnerWithSymbols() {
@@ -93,11 +105,12 @@ public class DataGenerator {
 
     //Другие невалидные значения
     public static String getCardNumberNotFromRange() {
-        return "4444 4444 4444 4443";
+        return fakerEn.business().creditCardNumber();
     }
 
     public static String getCardNumberWithLessNumbers() {
-        return "4444 4444 4444 444";
+        String creditCard = fakerEn.business().creditCardNumber();
+        return creditCard.substring(0, creditCard.length() - 1);
     }
 
     public static String getMonthWithMoreThan12() {
@@ -105,19 +118,19 @@ public class DataGenerator {
     }
 
     public static String getMonthWith1Symbol() {
-        return "1";
+        return String.valueOf(fakerEn.number().numberBetween(1, 10));
     }
 
     public static String getYearLessThanCurrent() {
-        return "22";
+        return LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yy"));
     }
 
     public static String getYearWith1Symbol() {
-        return "2";
+        return String.valueOf(fakerEn.number().numberBetween(1, 10));
     }
 
     public static String getCVVWith2Symbols() {
-        return "34";
+        return fakerEn.number().digits(2);
     }
 
 }

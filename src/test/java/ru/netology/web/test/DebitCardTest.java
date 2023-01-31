@@ -146,7 +146,7 @@ public class DebitCardTest {
     }
 
     @Test
-    //Вручную проходит
+    //Вручную не проходит, форма отправляется без ошибок
     @DisplayName("12. Месяц из двух нулей")
     void shouldThrowInvalidExpDateMonthVerificationErrorWith00DebitCard() {
         debitPage = mainPage.goToDebitPage();
